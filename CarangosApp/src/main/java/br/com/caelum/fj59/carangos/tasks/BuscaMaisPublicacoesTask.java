@@ -22,6 +22,8 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
 
     public BuscaMaisPublicacoesTask(MainActivity activity) {
         this.activity = activity;
+
+
     }
 
     @Override
@@ -50,4 +52,10 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
             Toast.makeText(this.activity, "Erro na busca dos dados", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public interface BuscaMaisPublicacoesDelegate {
+        void lidaComRetorno(List<Publicacao> retorno);
+        void lidaComErro(Exception e);
+    }
+
 }
