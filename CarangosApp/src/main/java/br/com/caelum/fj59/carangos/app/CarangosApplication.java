@@ -6,11 +6,14 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.caelum.fj59.carangos.modelo.Publicacao;
+
 /**
  * Created by android5501 on 20/10/15.
  */
 public class CarangosApplication extends Application {
     private List<AsyncTask<?,?,?>> tasks = new ArrayList<AsyncTask<?,?,?>>();
+    private List<Publicacao> publicacoes = new ArrayList<Publicacao>();
 
     @Override
     public void onTerminate() {
@@ -27,5 +30,9 @@ public class CarangosApplication extends Application {
 
     public void desregistra(AsyncTask<?,?,?> task){
         tasks.remove(task);
+    }
+
+    public List<Publicacao> getPublicacoes() {
+        return publicacoes;
     }
 }
