@@ -21,10 +21,11 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
     private BuscaMaisPublicacoesDelegate delegate;
     private Exception erro;
 //    private MainActivity activity;
+    private CarangosApplication application;
 
     public BuscaMaisPublicacoesTask(MainActivity activity) {
-        this.delegate = delegate;
-        this.delegate.getCarangosApplication().registra(this);
+        this.application = application;
+        this.application.registra(this);
     }
 
     @Override
@@ -52,7 +53,8 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
         } else {
             this.delegate.lidaComErro(this.erro);
         }
-        delegate.getCarangosApplication().desregistra(this);
+
+        this.application.desregistra(this);
     }
 
     public interface BuscaMaisPublicacoesDelegate {
