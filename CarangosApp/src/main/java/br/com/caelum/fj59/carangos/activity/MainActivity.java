@@ -13,6 +13,7 @@ import java.util.List;
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.adapter.PublicacaoAdapter;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
+import br.com.caelum.fj59.carangos.evento.EventosPublicacoesRecebidas;
 import br.com.caelum.fj59.carangos.fragments.ListaDePublicacoesFragment;
 import br.com.caelum.fj59.carangos.fragments.ProgressFragment;
 import br.com.caelum.fj59.carangos.infra.MyLog;
@@ -31,12 +32,18 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
     private static final String ESTADO_ATUAL = "ESTADO_ATUAL";
 //    private EventoPublicacoesRecebidas receiver;
 
+//    Guardando o evento como atributo
+    private EventosPublicacoesRecebidas evento;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
         this.estado = new EstadoMainActivityInicio();
+
+//        Primeiro registrando a Activity como observador
+        this.evento = EventosPublicacoesRecebidas.registraObservador(this);
 
         this.listView = (ListView) findViewById(R.id.publicacoes_list);
         this.publicacoes = new ArrayList<Publicacao>();
@@ -90,13 +97,19 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
         return (CarangosApplication) getApplication();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.evento.desregistra(getCarangosApplication());
+    }
+
     public void alteraEstadoEExecuta(EstadoMainActivityBase estado){
         this.estado = estado;
         this.estado.executa(this);
     }
 
     public void buscaPublicacoes(){
-        new BuscaMaisPublicacoesTask(this).execute();
+        new BuscaMaisPublicacoesTask(getCarangosApplication()).execute();
     }
 
     public List<Publicacao> getPublicacoes() {

@@ -3,11 +3,13 @@ package br.com.caelum.fj59.carangos.tasks;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.caelum.fj59.carangos.activity.MainActivity;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.converter.PublicacaoConverter;
+import br.com.caelum.fj59.carangos.evento.EventosPublicacoesRecebidas;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.webservice.Pagina;
@@ -23,7 +25,7 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
 //    private MainActivity activity;
     private CarangosApplication application;
 
-    public BuscaMaisPublicacoesTask(MainActivity activity) {
+    public BuscaMaisPublicacoesTask(CarangosApplication activity) {
         this.application = application;
         this.application.registra(this);
     }
@@ -49,9 +51,9 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
         MyLog.i("RETORNO OBTIDO!" + retorno);
 
         if (retorno!=null) {
-            this.delegate.lidaComRetorno(retorno);
+            EventosPublicacoesRecebidas.notifica(this.application, (Serializable) retorno, true);
         } else {
-            this.delegate.lidaComErro(this.erro);
+            EventosPublicacoesRecebidas.notifica(this.application, (Serializable) retorno, false);
         }
 
         this.application.desregistra(this);

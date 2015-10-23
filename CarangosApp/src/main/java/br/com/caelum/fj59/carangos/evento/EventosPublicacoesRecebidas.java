@@ -9,6 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.io.Serializable;
 import java.util.List;
 
+import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesTask;
@@ -54,6 +55,17 @@ public class EventosPublicacoesRecebidas extends BroadcastReceiver {
     }
 
     public static void notifica(Context context, Serializable resultado, boolean sucesso){
-        Serializable resultado, boolean sucesso;
+
+        Intent intent = new Intent(PUBLICACOES_RECEBIDAS);
+
+        intent.putExtra(RETORNO, resultado);
+        intent.putExtra(SUCESSO, sucesso);
+
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+    }
+
+    public void desregistra(CarangosApplication application){
+        LocalBroadcastManager.getInstance(application).unregisterReceiver(this);
     }
 }
